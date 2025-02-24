@@ -2,7 +2,6 @@ package com.code.bms.book.service;
 
 import com.code.bms.book.controller.AuthorRequest;
 import com.code.bms.book.entity.Author;
-import com.code.bms.book.entity.Book;
 import com.code.bms.book.repository.AuthorRepository;
 import com.code.bms.book.repository.BookRepository;
 import lombok.RequiredArgsConstructor;

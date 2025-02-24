@@ -1,7 +1,6 @@
 package com.code.bms.book.controller;
 
 import com.code.bms.book.entity.Author;
-import com.code.bms.book.entity.Book;
 import com.code.bms.book.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,7 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @PostMapping
-    public ResponseEntity<AuthorResponse> createBook(@RequestBody AuthorRequest request) {
+    public ResponseEntity<AuthorResponse> createAuthor(@RequestBody AuthorRequest request) {
         Author author = authorService.createAuthor(request);
         return ResponseEntity.ok(AuthorResponse.from(author));
     }
@@ -35,7 +34,7 @@ public class AuthorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AuthorResponse> updateBook(@PathVariable("id") Long id, @RequestBody AuthorRequest request) {
+    public ResponseEntity<AuthorResponse> updateAuthor(@PathVariable("id") Long id, @RequestBody AuthorRequest request) {
         Author author = authorService.updateAuthor(id, request);
         return ResponseEntity.ok(AuthorResponse.from(author));
     }
