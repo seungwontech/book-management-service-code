@@ -2,6 +2,7 @@ package com.code.bms.book.controller;
 
 import com.code.bms.book.entity.Book;
 import com.code.bms.book.service.BookService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class BookController {
 
     // 도서 생성
     @PostMapping
-    public ResponseEntity<BookResponse> createBook(@RequestBody BookRequest request) {
+    public ResponseEntity<BookResponse> createBook(@RequestBody @Valid BookRequest request) {
         Book book = bookService.createBook(request);
         return ResponseEntity.ok(BookResponse.from(book));
     }
@@ -37,7 +38,7 @@ public class BookController {
 
     // 도서 정보 수정
     @PutMapping("/{id}")
-    public ResponseEntity<BookResponse> updateBook(@PathVariable("id") Long id, @RequestBody BookRequest request) {
+    public ResponseEntity<BookResponse> updateBook(@PathVariable("id") Long id, @RequestBody @Valid BookRequest request) {
         Book book = bookService.updateBook(id, request);
         return ResponseEntity.ok(BookResponse.from(book));
     }
