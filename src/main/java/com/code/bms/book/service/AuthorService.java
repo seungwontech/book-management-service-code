@@ -4,6 +4,8 @@ import com.code.bms.book.controller.AuthorRequest;
 import com.code.bms.book.entity.Author;
 import com.code.bms.book.repository.AuthorRepository;
 import com.code.bms.book.repository.BookRepository;
+import com.code.bms.config.exception.CoreException;
+import com.code.bms.config.exception.ErrorType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +23,9 @@ public class AuthorService {
     public Author createAuthor(AuthorRequest request) {
         Optional<Author> optionalAuthor = authorRepository.findByEmail(request.email());
         if (optionalAuthor.isPresent()) {
-            throw new IllegalArgumentException("email already exists");
+            throw new CoreException(ErrorType.EMAIL_ALREADY_EXISTS, request.email());
         }
+
         Author author = Author.create(request.name(), request.email());
         author = authorRepository.save(author);
 
@@ -34,11 +37,11 @@ public class AuthorService {
     }
 
     public Author getAuthorById(Long id) {
-        return authorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("author not found"));
+        return authorRepository.findById(id).orElseThrow(() -> new CoreException(ErrorType.AUTHOR_NOT_FOUND, id));
     }
 
     public Author updateAuthor(Long id, AuthorRequest request) {
-        authorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("author not found"));
+        authorRepository.findById(id).orElseThrow(() -> new CoreException(ErrorType.AUTHOR_NOT_FOUND, id));
 
         Author author = Author.update(id, request.name(), request.email());
         return authorRepository.save(author);
@@ -47,7 +50,7 @@ public class AuthorService {
     public void deleteAuthor(Long id) {
         // 연관된 도서가 있는지 확인하고 삭제를 막는 로직
         if (bookRepository.existsByAuthorId(id)) {
-            throw new IllegalStateException("해당 저자와 연관된 도서가 있어 삭제할 수 없습니다.");
+            throw new CoreException(ErrorType.AUTHOR_DELETE_CONFLICT, id);
         }
         authorRepository.deleteById(id);
     }

@@ -3,6 +3,8 @@ package com.code.bms.book.service;
 import com.code.bms.book.controller.BookRequest;
 import com.code.bms.book.entity.Book;
 import com.code.bms.book.repository.BookRepository;
+import com.code.bms.config.exception.CoreException;
+import com.code.bms.config.exception.ErrorType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +18,11 @@ public class BookService {
 
     public Book createBook(BookRequest request) {
         Optional<Book> optionalBook = bookRepository.findByIsbn(request.isbn());
-
         if (optionalBook.isPresent()) {
-            throw new IllegalArgumentException("ISBN already exists");
+            throw new CoreException(ErrorType.ISBN_ALREADY_EXISTS, request.isbn());
         }
 
-        Book book = Book.create(request.title(), request.description(),request.isbn(), request.publicationDate(), request.authorId());
+        Book book = Book.create(request.title(), request.description(), request.isbn(), request.publicationDate(), request.authorId());
         book = bookRepository.save(book);
         return book;
     }
@@ -31,13 +32,13 @@ public class BookService {
     }
 
     public Book getBookById(Long id) {
-        return bookRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
+        return bookRepository.findById(id).orElseThrow(() -> new CoreException(ErrorType.BOOK_NOT_FOUND, id));
     }
 
     public Book updateBook(Long id, BookRequest request) {
-        bookRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Book not found"));
+        bookRepository.findById(id).orElseThrow(() -> new CoreException(ErrorType.BOOK_NOT_FOUND, id));
 
-        Book book = Book.update(id, request.title(), request.description(),request.isbn(), request.publicationDate(), request.authorId());
+        Book book = Book.update(id, request.title(), request.description(), request.isbn(), request.publicationDate(), request.authorId());
         return bookRepository.save(book);
     }
 

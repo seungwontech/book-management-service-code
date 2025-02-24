@@ -1,5 +1,7 @@
 package com.code.bms.book.entity;
 
+import com.code.bms.config.exception.CoreException;
+import com.code.bms.config.exception.ErrorType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,15 +33,15 @@ public class Book {
     @Column(name = "author_id", nullable = false)
     private Long authorId;
 
+    public static void validateIsbn(String isbn) {
+        if (isbn == null || !isbn.matches("[1-9]\\d{2}[\\d]{4,7}[\\d]{1,3}0")) {
+            throw new CoreException(ErrorType.INVALID_ISBN_FORMAT, isbn);
+        }
+    }
+
     public static Book create(String title, String description, String isbn, LocalDate publicationDate, Long authorId) {
         validateIsbn(isbn);
         return new Book(null, title, description, isbn, publicationDate, authorId);
-    }
-
-    public static void validateIsbn(String isbn) {
-        if (isbn == null || !isbn.matches("[1-9]\\d{2}[\\d]{4,7}[\\d]{1,3}0")) {
-            throw new IllegalArgumentException("Invalid ISBN-10 format");
-        }
     }
 
     public static Book update(Long id, String title, String description, String isbn, LocalDate publicationDate, Long authorId) {
