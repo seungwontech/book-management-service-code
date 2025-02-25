@@ -52,6 +52,6 @@ public class AuthorService {
         if (bookRepository.existsByAuthorId(id)) {
             throw new CoreException(ErrorType.AUTHOR_DELETE_CONFLICT, id);
         }
-        authorRepository.deleteById(id);
+        authorRepository.delete(authorRepository.findById(id).orElseThrow(() -> new CoreException(ErrorType.AUTHOR_NOT_FOUND, id)));
     }
 }

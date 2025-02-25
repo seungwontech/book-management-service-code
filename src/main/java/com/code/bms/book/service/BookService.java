@@ -43,6 +43,6 @@ public class BookService {
     }
 
     public void deleteBook(Long id) {
-        bookRepository.deleteById(id);
+        bookRepository.delete(bookRepository.findById(id).orElseThrow(() -> new CoreException(ErrorType.BOOK_NOT_FOUND, id)));
     }
 }
