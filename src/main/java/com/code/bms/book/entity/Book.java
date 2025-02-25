@@ -34,7 +34,7 @@ public class Book {
     private Long authorId;
 
     public static void validateIsbn(String isbn) {
-        if (isbn == null || !isbn.matches("[1-9]\\d{2}[\\d]{4,7}[\\d]{1,3}0")) {
+        if (isbn == null || !isbn.matches("^(?:[1-8]\\d{2}|900)\\d{4,7}\\d{1,3}0$")) {
             throw new CoreException(ErrorType.INVALID_ISBN_FORMAT, isbn);
         }
     }
