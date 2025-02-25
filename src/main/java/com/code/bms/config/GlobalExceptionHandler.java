@@ -33,10 +33,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponse, status);
     }
 
+    /**
+     * 요청 데이터 검증 실패시 처리하는 메서드
+     */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
-        // 첫 번째 오류 메시지 가져오기
         FieldError fieldError = ex.getBindingResult().getFieldError();
         String errorMessage = (fieldError != null) ? fieldError.getDefaultMessage() : "유효성 검사 오류";
 
