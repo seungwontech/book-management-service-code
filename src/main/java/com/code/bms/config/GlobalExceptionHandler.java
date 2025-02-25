@@ -49,8 +49,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * 그 외의 모든 예외를 처리하는 메서드
      */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleAllExceptions(Exception exception) {
+    public ResponseEntity<ErrorResponse> handleAllExceptions(Exception exception, WebRequest request) {
         log.warn("Exception occur: ", exception);
+
+        String requestUri = request.getDescription(false);
+        if (requestUri.contains("/v3/api-docs") || requestUri.contains("/swagger-ui")) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
         ErrorResponse errorResponse = new ErrorResponse(ErrorCode.DB_ERROR, "서버 내부 오류가 발생했습니다.", null);
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
