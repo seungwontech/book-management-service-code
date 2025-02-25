@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class BookServiceUnitTest {
+class BookServiceTest {
 
     @Mock
     private BookRepository bookRepository;
