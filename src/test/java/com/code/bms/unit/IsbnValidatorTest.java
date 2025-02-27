@@ -19,10 +19,10 @@ public class IsbnValidatorTest {
     }
 
     @Test
-    @DisplayName("유효하지 않은 ISBN-10 - 100~900 범위 벗어남")
+    @DisplayName("유효하지 않은 ISBN-10 - 10~90 범위 벗어남")
     void invalidIsbn10_outOfRange() {
         assertThrows(CoreException.class, () -> validateIsbn("0991234560"));
-        assertThrows(CoreException.class, () -> validateIsbn("9011234560"));
+        assertThrows(CoreException.class, () -> validateIsbn("9111234560"));
     }
 
     @Test
@@ -46,7 +46,12 @@ public class IsbnValidatorTest {
 
     // 유효성 검사 메서드
     private void validateIsbn(String isbn) {
-        if (isbn == null || !isbn.matches("^(?:[1-8]\\d{2}|900)\\d{4,7}\\d{1,3}0$")) {
+        if (isbn == null || isbn.length() != 10 || !isbn.endsWith("0") || !isbn.matches("\\d{10}")) {
+            throw new CoreException(ErrorType.INVALID_ISBN_FORMAT, isbn);
+        }
+
+        int countryCode = Integer.parseInt(isbn.substring(0, 2));
+        if (countryCode < 10 || countryCode > 90) {
             throw new CoreException(ErrorType.INVALID_ISBN_FORMAT, isbn);
         }
     }

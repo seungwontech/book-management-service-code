@@ -34,7 +34,12 @@ public class Book {
     private Long authorId;
 
     public static void validateIsbn(String isbn) {
-        if (isbn == null || !isbn.matches("^(?:[1-8]\\d{2}|900)\\d{4,7}\\d{1,3}0$")) {
+        if (isbn == null || isbn.length() != 10 || !isbn.endsWith("0") || !isbn.matches("\\d{10}")) {
+            throw new CoreException(ErrorType.INVALID_ISBN_FORMAT, isbn);
+        }
+
+        int countryCode = Integer.parseInt(isbn.substring(0, 2));
+        if (countryCode < 10 || countryCode > 90) {
             throw new CoreException(ErrorType.INVALID_ISBN_FORMAT, isbn);
         }
     }
