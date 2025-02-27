@@ -337,7 +337,7 @@ Spring Boot 3.4.3 버전과 Java 17을 사용하여 개발했습니다. 프로�
 
 ### 데이터베이스 구성
 
-> H2 데이터베이스를 사용하고 있습니다.
+> H2 데이터베이스를 사용하고 있습니다.  
 > 다른 데이터베이스를 사용하려면 application.properties에서 설정을 변경할 수 있습니다.
 
 - DB URL: jdbc:h2:~/test
@@ -347,5 +347,5 @@ Spring Boot 3.4.3 버전과 Java 17을 사용하여 개발했습니다. 프로�
 - H2 콘솔 URL: http://localhost:8080/h2-console
 - 이 콘솔을 통해 H2 데이터베이스를 웹 브라우저에서 직접 관리할 수 있습니다.
 - 로그인 시 사용할 JDBC URL: jdbc:h2:~/test
-- User Name:sa
-- Password:(null)
+- User Name: sa
+- Password: (null)
